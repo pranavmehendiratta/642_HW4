@@ -4,7 +4,9 @@ import binascii
 import socket
 import pprint
 
-## ARP Spoofing functions and variables
+# ARP Spoofing functions and variables
+
+
 def add_colons_to_mac(mac_addr):
     """This function accepts a 12 hex digit string and converts it to a colon
 separated string"""
@@ -28,23 +30,33 @@ def detectArpSpoofing(filename, arp_spoofing_devices):
                 src_ip = socket.inet_ntoa(arp.spa)
                 src_mac = add_colons_to_mac(binascii.hexlify(arp.sha))
 
-                mac_for_src_ip = arp_spoofing_devices[src_ip]
-                ip_for_src_mac = arp_spoofing_devices[src_mac]
+                # getting the MAC for the src IP in ARP reply
+                mac_for_src_ip = None
+                if arp_spoofing_devices.has_key(src_ip):
+                    mac_for_src_ip = arp_spoofing_devices[src_ip]
+
+                # getting the IP for the src MAC in ARP reply
+                ip_for_src_mac = None
+                if arp_spoofing_devices.has_key(src_mac):
+                    ip_for_src_mac = arp_spoofing_devices[src_mac]
 
                 # If mac is in the devices list but ip is not matching
                 if ip_for_src_mac is not None and ip_for_src_mac != src_ip:
                     print "ARP spoofing!"
                     print "MAC:", src_mac
-                    print "Packet number:", frame_counter
+                    print "Packet number:", frame_counter, "\n"
                 # If mac is in the devices list but ip is not matching
                 elif mac_for_src_ip is not None and mac_for_src_ip != src_mac:
                     print "ARP spoofing!"
                     print "MAC:", src_mac
-                    print "Packet number:", frame_counter
+                    print "Packet number:", frame_counter, "\n"
 
-## Port scanning functions and variables
+# Port scanning functions and variables
+
+
 test_port_scans = dict()
 test_port_scans_packets = dict()
+
 
 def detectPortScan(filename, port_scan_devices):
     f = open(filename, "rb")
@@ -57,24 +69,23 @@ def detectPortScan(filename, port_scan_devices):
         frame_counter += 1
         if ether.type == dpkt.ethernet.ETH_TYPE_IP:
             ip = ether.data
-            tcp = ip.data
-            udp = ip.data
+            transport_layer = ip.data
             dst_ip = socket.inet_ntoa(ip.dst)
 
+            # Initializing the dictionary for packet number and ports
             if not test_port_scans.has_key(dst_ip):
                 test_port_scans[dst_ip] = set()
                 test_port_scans_packets[dst_ip] = list()
 
-            if ip.p == TCP_PROTOCOL and (tcp.flags & dpkt.tcp.TH_SYN) != 0:
-                port = tcp.dport
-                if test_port_scans.has_key(dst_ip):
-                    test_port_scans.get(dst_ip).add(port)
-                    test_port_scans_packets.get(dst_ip).append(frame_counter)
-            elif ip.p == UDP_PROTOCOL:
-                port = udp.dport
-                if test_port_scans.has_key(dst_ip):
-                    test_port_scans.get(dst_ip).add(port)
-                    test_port_scans_packets.get(dst_ip).append(frame_counter)
+            # Checking if a TCP SYN packet
+            if ip.p == TCP_PROTOCOL and (transport_layer.flags & dpkt.tcp.TH_SYN) != 0:
+                port = transport_layer.dport
+                test_port_scans.get(dst_ip).add(port)
+                test_port_scans_packets.get(dst_ip).append(frame_counter)
+            elif ip.p == UDP_PROTOCOL:  # Checking if UDP packet
+                port = transport_layer.dport
+                test_port_scans.get(dst_ip).add(port)
+                test_port_scans_packets.get(dst_ip).append(frame_counter)
 
     for ip, ports in test_port_scans_packets.iteritems():
         if len(ports) >= 100:
@@ -83,7 +94,7 @@ def detectPortScan(filename, port_scan_devices):
             print "Packet number:", str(test_port_scans_packets.get(ip))
 
 if __name__ == '__main__':
-    """
+
     arp_spoofing_devices = dict()
     arp_spoofing_devices["192.168.0.100"] = "7c:d1:c3:94:9e:b8"
     arp_spoofing_devices["192.168.0.103"] = "d8:96:95:01:a5:c9"
@@ -94,7 +105,6 @@ if __name__ == '__main__':
     arp_spoofing_devices["f8:1a:67:cd:57:6e"] = "192.168.0.1"
 
     detectArpSpoofing(sys.argv[1], arp_spoofing_devices)
-    """
 
     port_scan_devices = dict()
     port_scan_devices["192.168.0.100"] = set()

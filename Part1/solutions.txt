@@ -5,19 +5,20 @@ Pranav Mehendiratta, 9074036501, mehendiratta
 # Trace 1: HTTP
 ## Give three websites (domain Nname and IP addresses) visited from source IP address `192.168.0.100`
 
-205.251.242.54 www.amazon.com\r\n
-23.3.96.123 www.z-ecx.images-amazon.com\r\n
-74.125.225.91 ad.doubleclick.net\r\n
-54.230.33.13 ecx.images-amazon.com\r\n
+205.251.242.54 www.amazon.com
+180.76.3.151 www.baidu.com
+50.93.210.4 www.madisonproperty.com
 
 ## Give three search queries and the domain of the site for each query made from source IP address `192.168.0.100`
 
-http://www.amazon.com/gp/gateway-center-stage/ajax/get-content.html?rId=1N04V3Y77D45M5A9T9P1&_=1393230026686
+Query - chicago metro 
+domain - www.bing.com
 
-http://pagead2.googlesyndication.com/activeview?id=lidar2&v=101&adk=1&p=0,0,250,300&tos=0,0,0,0,0&mtos=0,0,0,0,0&rs=5&swf=-&ord=310872418%3F&amd=2992003%2C7971983%2C1572288%2C106787215%2C57154978%2C279447112%2C2501316474090618905%3B&req=http%3A%2F%2Fad.doubleclick.net%2Fadi%2FN6595.160337.AMAZON.COM%2FB7971983.30%3Bsz%3D300x250%3Bclick&tp=adi&r=i&ts=0&bs=-12245933,-12245933&bos=1440,712&ps=-12245933,-12245933&ss=1680,1050&tt=3&pt=383&deb=1-1-1-0-1-2&iframe_loc=http%3A%2F%2Fad.doubleclick.net%2Fadi%2FN6595.160337.AMAZON.COM%2FB7971983.30%3Bsz%3D300x250%3Bclick%3Dhttp%3A%2F%2Fadclick.g.doubleclick.net%2Faclk%3Fsa%3DL%26ai%3DB2khAygALU8DJHLPewQH_loGwB76t2Y0FAAAAEAEgADgAWN64yuxzYMnW2Y38pPgUggEXY2EtcHViLTk2Nzc3ODA3MjM0OTQ2NjayAQ53d3cuYW1hem9uLmNvbboBCWdmcF9pbWFnZcgBCdoBFmh0dHA6Ly93d3cuYW1hem9uLmNvbS_AAgLgAgDqAhM0MjE1L2Ftem4udXMuZ3cuYXRm-AKC0h6QA-gCmAOkA6gDAdAEkE7gBAGgBh8%26num%3D0%26sig%3DAOD64_2W6Vi630UUJURlnK38ZO3GMs34Jw%26client%3Dca-pub-9677780723494666%26adurl%3D%3Bord%3D310872418%3F&is=300,250&url=http%3A%2F%2Fad.doubleclick.net%2Fadi%2FN6595.160337.AMAZON.COM%2FB7971983.30%3Bsz%3D300x250%3Bclick%3Dhttp%3A%2F%2Fadclick.g.doubleclick.net%2Faclk%3Fsa%3DL%26ai%3DB2khAygALU8DJHLPewQH_loGwB76t2Y0FAAAAEAEgADgAWN64yuxzYMnW2Y38pPgUggEXY2EtcHViLTk2Nzc3ODA3MjM0OTQ2NjayAQ53d3cuYW1hem9uLmNvbboBCWdmcF9pbWFnZcgBCdoBFmh0dHA6Ly93d3cuYW1hem9uLmNvbS_AAgLgAgDqAhM0MjE1L2Ftem4udXMuZ3cuYXRm-AKC0h6QA-gCmAOkA6gDAdAEkE7gBAGgBh8%26num%3D0%26sig%3DAOD64_2W6Vi630UUJURlnK38ZO3GMs34Jw%26client%3Dca-pub-9677780723494666%26adurl%3D%3Bord%3D310872418%3F&anc=http%3A%2F%2Fwww.amazon.com,http%3A%2F%2Fwww.amazon.com&adep=2
+Query - madison map 
+domain - www.bing.com
 
-http://s.amazon-adsystem.com/iu3?d=amazon.com&slot=navFooter&a2=01017c9c31b3ea516fccdf421ad41cbd6dd774c5814129f39f914d602ff34114d648&old_oo=0&cb=1393230026367&dcc=t
-
+Query - adventures of Stochastic Processes 
+domain - www.amazon.com
 
 # Trace 2: FTP
 ## What is the user name and password used to connect to the FTP server?

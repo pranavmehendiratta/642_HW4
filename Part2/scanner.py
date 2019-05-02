@@ -3,6 +3,7 @@ import sys
 import binascii
 import socket
 import pprint
+import datetime
 
 # ARP Spoofing functions and variables
 
@@ -89,6 +90,74 @@ def detectPortScan(filename, port_scans, port_scans_packets):
             print "IP:", ip
             print "Packet number:", str(port_scans_packets.get(ip))
 
+# TCP Flood variables and functions
+
+
+class Packet:
+    packet_number = 0
+    port = 0
+    ip = 0
+    seq_num = 0
+    ack_num = 0
+    time = 0.0
+
+    def __init__(self, packet_number, port, ip, seq_num, ack_num, time):
+        self.packet_number = packet_number
+        self.port = port
+        self.ip = ip
+        self.seq_num = seq_num
+        self.ack_num = ack_num
+        self.time = time
+
+    def __str__(self):
+        return "[{0}, {1}, {2}, {3}, {4}, {5}]".format(str(self.packet_number), str(self.port), str(self.ip),
+                            str(self.seq_num), str(self.ack_num), str(self.time))
+        #return str(self.packet_number)
+
+
+def detectTCPFlood(filename,  unacked_syns, timestamp_packet_numbers):
+    f = open(filename, "rb")
+    pcap = dpkt.pcap.Reader(f)
+    frame_counter = 0
+    TCP_PROTOCOL = 6
+
+    for ts, buf in pcap:
+        ether = dpkt.ethernet.Ethernet(buf)
+        frame_counter += 1
+        ts = datetime.datetime.utcfromtimestamp(ts)
+
+        # Initializing the dictionary for packet number and ports
+        if ether.type == dpkt.ethernet.ETH_TYPE_IP:
+            ip = ether.data
+            transport_layer = ip.data
+            dst_ip = socket.inet_ntoa(ip.dst)
+
+            if ip.p == TCP_PROTOCOL:
+
+                # One destination is ip:port
+                port = transport_layer.dport
+                key = dst_ip + ":" + str(port)
+                if not unacked_syns.has_key(key):
+                    unacked_syns[key] = list()
+
+                if (transport_layer.flags & dpkt.tcp.TH_SYN) != 0:
+                    p = Packet(frame_counter, port, dst_ip, 0, 0, ts)  # Setting seq num and ack num to 0 for now
+
+                    while len(unacked_syns[key]) != 0 and (ts - unacked_syns[key][0].time).total_seconds() > 1.0:
+                        unacked_syns[key].pop(0)
+                    unacked_syns[key].append(p)
+
+                if len(unacked_syns[key]) > 100:
+                    print "SYN floods!"
+                    print "IP:", dst_ip
+                    print "Packet number:", [p.packet_number for p in unacked_syns[key]]
+
+    #for key, l in unacked_syns.iteritems():
+    #    print key
+    #    for p in l:
+    #        print p
+    #    print "--------------------------------------------"
+
 
 if __name__ == '__main__':
     """
@@ -108,4 +177,8 @@ if __name__ == '__main__':
 
     detectPortScan(sys.argv[1], port_scans, port_scans_packets)
     """
+    unacked_syns = dict()
+    timestamp_packet_numbers = dict()
+
+    detectTCPFlood(sys.argv[1], unacked_syns, timestamp_packet_numbers)
 

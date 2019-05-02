@@ -134,7 +134,7 @@ def detectTCPFlood(filename,  unacked_syns, timestamp_packet_numbers):
 
             if ip.p == TCP_PROTOCOL:
 
-                # One destination is ip:port
+                # ip:port is a destination
                 port = transport_layer.dport
                 key = dst_ip + ":" + str(port)
                 if not unacked_syns.has_key(key):
@@ -142,15 +142,15 @@ def detectTCPFlood(filename,  unacked_syns, timestamp_packet_numbers):
 
                 if (transport_layer.flags & dpkt.tcp.TH_SYN) != 0:
                     p = Packet(frame_counter, port, dst_ip, 0, 0, ts)  # Setting seq num and ack num to 0 for now
-
-                    while len(unacked_syns[key]) != 0 and (ts - unacked_syns[key][0].time).total_seconds() > 1.0:
-                        unacked_syns[key].pop(0)
+                    if len(unacked_syns[key]) != 0 and (ts - unacked_syns[key][0].time).total_seconds() > 1.0:
+                        if len(unacked_syns[key]) > 100:
+                            print "SYN floods!"
+                            print "IP:", dst_ip
+                            print "Packet number:", [p.packet_number for p in unacked_syns[key]]
+                        unacked_syns[key] = list()
                     unacked_syns[key].append(p)
 
-                if len(unacked_syns[key]) > 100:
-                    print "SYN floods!"
-                    print "IP:", dst_ip
-                    print "Packet number:", [p.packet_number for p in unacked_syns[key]]
+
 
     #for key, l in unacked_syns.iteritems():
     #    print key

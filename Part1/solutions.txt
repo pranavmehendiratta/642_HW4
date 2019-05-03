@@ -1,6 +1,7 @@
 ﻿# Team members: UW ID #s and names - there is no special format for this.
 
-Pranav Mehendiratta, 9074036501, mehendiratta
+sbhagat3,bhagat,Bhagat,Siddhant
+mehendiratta,mehendiratta,Mehendiratta,Pranav
 
 # Trace 1: HTTP
 ## Give three websites (domain Nname and IP addresses) visited from source IP address `192.168.0.100`
@@ -56,7 +57,7 @@ Dest IP - 74.125.225.46
 
 ## List the IP addresses on the route between source and destination.
 
-192.168.0.100
+Source - 192.168.0.100
 192.168.0.1
 10.131.180.1
 96.34.20.20
@@ -70,7 +71,7 @@ Dest IP - 74.125.225.46
 96.34.152.30
 209.85.254.120
 209.85.250.28
-74.125.225.46
+Destination - 74.125.225.46
 
 # Trace 4: POP
 ## What is the POP username and password?
@@ -84,14 +85,13 @@ password - whitehat
 
 ## Give the contents of from, to, subject, and date for one email message.
 
-Date - Friday, 23 April 2010 08:20:52 -0700
-from - cs155@dummymail.com
-to - cs155@dummymail.com
-subject - foobar
+Date: Fri, 23 Apr 2010 08:20:52 -0700
+From: joe <cs155@dummymail.com>
+To: cs155@dummymail.com
+Subject: foobar
 
 ## What email client (application) and operating system is this person using to send and receive email?
 
 Thunderbird 2.0.0.23
 Windows/20090812
-
 
